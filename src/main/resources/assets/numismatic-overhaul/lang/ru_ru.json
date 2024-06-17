@@ -1,0 +1,73 @@
+{
+  "item.numismatic-overhaul.bronze_coin": "Бронзовая монета",
+  "item.numismatic-overhaul.silver_coin": "Серебрянная монета",
+  "item.numismatic-overhaul.gold_coin": "Золотая монета",
+  "item.numismatic-overhaul.money_bag": "Мешок монет",
+  "block.numismatic-overhaul.shop": "Магазин",
+  "block.numismatic-overhaul.inexhaustible_shop": "Неиссякаемый магазин",
+  "block.numismatic-overhaul.inexhaustible_shop.tooltip": "Только творческий — всегда в наличии",
+  "block.numismatic-overhaul.piggy_bank": "Свинья копилка",
+  "gui.numismatic-overhaul.shop.price": "Цена",
+  "gui.numismatic-overhaul.shop.inventory_title": "Инвентарь магазина",
+  "gui.numismatic-overhaul.shop.merchant_title": "Магазин",
+  "gui.numismatic-overhaul.shop.transfer_tooltip.enabled": [
+    "Воронки",
+    {
+      "text": " могут ",
+      "color": "#28FFBF"
+    },
+    "помещать \nпредметы в этот магазин"
+  ],
+  "gui.numismatic-overhaul.shop.transfer_tooltip.disabled": [
+    "Воронки",
+    {
+      "text": " не могут ",
+      "color": "#EB1D36"
+    },
+    "помещать \nпредметы в этот магазин"
+  ],
+  "gui.numismatic-overhaul.purse_title": "Кошелек",
+  "numismatic-overhaul.empty": "Пусто",
+  "filled_map.end_city": "Карта к Энду",
+  "currency.numismatic-overhaul.bronze": "Бронза",
+  "currency.numismatic-overhaul.silver": "Серебро",
+  "currency.numismatic-overhaul.gold": "Золото",
+
+  "itemGroup.numismatic-overhaul.main": "Numismatic Overhaul",
+  "itemGroup.numismatic-overhaul.main.button.modrinth": "Modrinth",
+  "itemGroup.numismatic-overhaul.main.button.curseforge": "CurseForge",
+  "itemGroup.numismatic-overhaul.main.button.github": "GitHub",
+  "itemGroup.numismatic-overhaul.main.button.discord": "Discord",
+
+  "text.config.numismatic-overhaul.title": "Numismatic Overhaul настройка",
+  "text.config.numismatic-overhaul.option.enableVillagerTrading": "Включить торговлю с жителями",
+  "text.config.numismatic-overhaul.option.enableMcaCompatibility": "Включить совместимость с MCA",
+
+  "text.config.numismatic-overhaul.category.purseOffsets": "Смещение кошелька",
+  "text.config.numismatic-overhaul.option.purseOffsets.survivalX": "Выживание - X",
+  "text.config.numismatic-overhaul.option.purseOffsets.survivalY": "Выживание - Y",
+  "text.config.numismatic-overhaul.option.purseOffsets.creativeX": "Творческий - X",
+  "text.config.numismatic-overhaul.option.purseOffsets.creativeY": "Творческий - Y",
+  "text.config.numismatic-overhaul.option.purseOffsets.merchantX": "Торговцы - X",
+  "text.config.numismatic-overhaul.option.purseOffsets.merchantY": "Торговцы - Y",
+
+  "text.config.numismatic-overhaul.category.lootOptions": "Генерация добычи",
+  "text.config.numismatic-overhaul.option.lootOptions.desertMinLoot": "Минимальная добыча в пустынном храме",
+  "text.config.numismatic-overhaul.option.lootOptions.desertMaxLoot": "Минимальная добыча в пустынном храме",
+  "text.config.numismatic-overhaul.option.lootOptions.dungeonMinLoot": "Минимальная добыча в подземельях",
+  "text.config.numismatic-overhaul.option.lootOptions.dungeonMaxLoot": "Минимальная добыча в подземельях",
+  "text.config.numismatic-overhaul.option.lootOptions.structureMinLoot": "Минимальная добыча в структурах",
+  "text.config.numismatic-overhaul.option.lootOptions.structureMaxLoot": "Минимальная добыча в структурах",
+  "text.config.numismatic-overhaul.option.lootOptions.strongholdLibraryMinLoot": "Минимальная добыча в библиотеке крепости",
+  "text.config.numismatic-overhaul.option.lootOptions.strongholdLibraryMaxLoot": "Минимальная добыча в библиотеке крепости",
+
+  "text.config.numismatic-overhaul.option.generateCurrencyInChests": "Генерация валюты в сундуках с добычей",
+  "text.config.numismatic-overhaul.option.moneyMessageLocation": "Местоположение сообщения о деньгах",
+  "text.config.numismatic-overhaul.option.moneyMessageLocation.tooltip": "Решает, где будет отображаться уведомление о деньгах (для применения требуется повторное присоединение к миру)",
+  "text.config.numismatic-overhaul.enum.moneyMessageLocation.actionbar": "Панель действий",
+  "text.config.numismatic-overhaul.enum.moneyMessageLocation.chat": "Чат",
+  "text.config.numismatic-overhaul.enum.moneyMessageLocation.disabled": "Отключено",
+
+  "gamerule.moneyDropPercentage": "Процент дропа монет",
+  "gamerule.moneyDropPercentage.description": "Контролирует, сколько денег игрок теряет при смерти, при условии, что keepInventory имеет значение false"
+}
