@@ -7,14 +7,9 @@ import com.glisco.numismaticoverhaul.currency.CurrencyResolver;
 import com.glisco.numismaticoverhaul.network.UpdateShopScreenS2CPacket;
 import io.wispforest.owo.ops.TextOps;
 import io.wispforest.owo.ui.base.BaseUIModelHandledScreen;
-import io.wispforest.owo.ui.base.BaseUIModelScreen;
-import io.wispforest.owo.ui.component.ButtonComponent;
-import io.wispforest.owo.ui.component.ItemComponent;
-import io.wispforest.owo.ui.component.LabelComponent;
-import io.wispforest.owo.ui.component.TextureComponent;
+import io.wispforest.owo.ui.component.*;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
-import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import io.wispforest.owo.ui.util.UISounds;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
@@ -22,20 +17,14 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class ShopScreen extends BaseUIModelHandledScreen<FlowLayout, ShopScreenHandler> {
@@ -176,7 +165,7 @@ public class ShopScreen extends BaseUIModelHandledScreen<FlowLayout, ShopScreenH
                 tradeBuffer.stack(bufferStack);
                 if (!bufferStack.isEmpty()) {
                     var tooltip = new ArrayList<TooltipComponent>();
-                    bufferStack.getTooltip(this.client.player, this.client.options.advancedItemTooltips ? TooltipContext.ADVANCED : TooltipContext.BASIC)
+                    bufferStack.getTooltip(this.client.player, this.client.options.advancedItemTooltips ? TooltipType.ADVANCED : TooltipType.BASIC)
                             .stream()
                             .map(Text::asOrderedText)
                             .map(TooltipComponent::of)
@@ -267,6 +256,6 @@ public class ShopScreen extends BaseUIModelHandledScreen<FlowLayout, ShopScreenH
     }
 
     static {
-        UIParsing.registerFactory("numismatic.fake-slot", element -> new FakeSlotComponent(ItemStack.EMPTY));
+        UIParsing.registerFactory(NumismaticOverhaul.id("fake-slot"), element -> new FakeSlotComponent(ItemStack.EMPTY));
     }
 }

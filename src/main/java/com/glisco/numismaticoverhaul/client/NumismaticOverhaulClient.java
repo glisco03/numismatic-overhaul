@@ -39,11 +39,11 @@ public class NumismaticOverhaulClient implements ClientModInitializer {
         HandledScreens.register(NumismaticOverhaul.SHOP_SCREEN_HANDLER_TYPE, ShopScreen::new);
         HandledScreens.register(NumismaticOverhaul.PIGGY_BANK_SCREEN_HANDLER_TYPE, PiggyBankScreen::new);
 
-        ModelPredicateProviderRegistry.register(NumismaticOverhaulItems.BRONZE_COIN, new Identifier("coins"), (stack, world, entity, seed) -> stack.getCount() / 100.0f);
-        ModelPredicateProviderRegistry.register(NumismaticOverhaulItems.SILVER_COIN, new Identifier("coins"), (stack, world, entity, seed) -> stack.getCount() / 100.0f);
-        ModelPredicateProviderRegistry.register(NumismaticOverhaulItems.GOLD_COIN, new Identifier("coins"), (stack, world, entity, seed) -> stack.getCount() / 100.0f);
+        ModelPredicateProviderRegistry.register(NumismaticOverhaulItems.BRONZE_COIN, Identifier.of("coins"), (stack, world, entity, seed) -> stack.getCount() / 100.0f);
+        ModelPredicateProviderRegistry.register(NumismaticOverhaulItems.SILVER_COIN, Identifier.of("coins"), (stack, world, entity, seed) -> stack.getCount() / 100.0f);
+        ModelPredicateProviderRegistry.register(NumismaticOverhaulItems.GOLD_COIN, Identifier.of("coins"), (stack, world, entity, seed) -> stack.getCount() / 100.0f);
 
-        ModelPredicateProviderRegistry.register(NumismaticOverhaulItems.MONEY_BAG, new Identifier("size"), (stack, world, entity, seed) -> {
+        ModelPredicateProviderRegistry.register(NumismaticOverhaulItems.MONEY_BAG, Identifier.of("size"), (stack, world, entity, seed) -> {
             long[] values = NumismaticOverhaulItems.MONEY_BAG.getCombinedValue(stack);
             if (values.length < 3) return 0;
 

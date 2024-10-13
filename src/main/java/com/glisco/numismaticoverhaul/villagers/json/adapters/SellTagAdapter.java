@@ -30,7 +30,7 @@ public class SellTagAdapter extends TradeJsonAdapter {
         VillagerJsonHelper.assertJsonObject(json, "sell");
 
         final var sellObject = JsonHelper.getObject(json, "sell");
-        final var tag = new Identifier(JsonHelper.getString(sellObject, "tag"));
+        final var tag = Identifier.of(JsonHelper.getString(sellObject, "tag"));
         final int count = JsonHelper.getInt(sellObject, "count", 1);
 
         int price = json.get("price").getAsInt();
@@ -71,7 +71,7 @@ public class SellTagAdapter extends TradeJsonAdapter {
             }
 
             final var sellStack = new ItemStack(entries.get(random.nextInt(entries.size())).value(), this.count);
-            return new TradeOffer(CurrencyHelper.getClosest(price), sellStack, this.maxUses, this.experience, multiplier);
+            return new TradeOffer(CurrencyHelper.getClosestTradeItem(price), sellStack, this.maxUses, this.experience, multiplier);
         }
     }
 

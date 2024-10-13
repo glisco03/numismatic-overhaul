@@ -43,7 +43,7 @@ public class SellStackAdapter extends TradeJsonAdapter {
         }
 
         public TradeOffer create(Entity entity, Random random) {
-            return new TradeOffer(CurrencyHelper.getClosest(price), sell, this.maxUses, this.experience, multiplier);
+            return new TradeOffer(CurrencyHelper.getClosestTradeItem(price), sell, this.maxUses, this.experience, multiplier);
         }
     }
 }

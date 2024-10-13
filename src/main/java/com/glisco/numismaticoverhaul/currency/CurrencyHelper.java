@@ -3,11 +3,12 @@ package com.glisco.numismaticoverhaul.currency;
 import com.glisco.numismaticoverhaul.item.CoinItem;
 import com.glisco.numismaticoverhaul.item.CurrencyItem;
 import com.glisco.numismaticoverhaul.item.MoneyBagItem;
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.BuiltInEndecs;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.BuiltInEndecs;
+import io.wispforest.endec.impl.KeyedEndec;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.village.TradedItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +100,11 @@ public class CurrencyHelper {
         }
 
         return CurrencyConverter.getAsItemStackList(CurrencyResolver.combineValues(values)).get(0);
+    }
+
+    public static TradedItem getClosestTradeItem(long price) {
+        var closestPriceStack = CurrencyHelper.getClosest(price);
+        return new TradedItem(closestPriceStack.getItem(), closestPriceStack.getCount());
     }
 
     private static boolean isCombined(ItemStack stack) {

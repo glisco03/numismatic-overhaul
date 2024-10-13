@@ -4,8 +4,8 @@ import com.glisco.numismaticoverhaul.NumismaticOverhaul;
 import com.glisco.numismaticoverhaul.block.ShopBlockEntity;
 import com.glisco.numismaticoverhaul.block.ShopOffer;
 import com.glisco.numismaticoverhaul.client.gui.ShopScreen;
+import io.wispforest.endec.impl.ReflectiveEndecBuilder;
 import io.wispforest.owo.network.ClientAccess;
-import io.wispforest.owo.serialization.endec.ReflectiveEndecBuilder;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public record UpdateShopScreenS2CPacket(List<ShopOffer> offers, long storedCurre
     }
 
     public static void initialize() {
-        ReflectiveEndecBuilder.register(ShopOffer.ENDEC, ShopOffer.class);
+        ReflectiveEndecBuilder.SHARED_INSTANCE.register(ShopOffer.ENDEC, ShopOffer.class);
         NumismaticOverhaul.CHANNEL.registerClientbound(UpdateShopScreenS2CPacket.class, UpdateShopScreenS2CPacket::handle);
     }
 }

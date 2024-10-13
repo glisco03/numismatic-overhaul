@@ -66,7 +66,7 @@ public class CurrencyTooltipComponent implements TooltipComponent {
         context.push().translate(0, 0, 50);
 
         for (int i = 0; i < originalCoins.size(); i++) {
-            context.drawGuiTexture(new Identifier("container/villager/discount_strikethrough"), x + (originalCoins.get(i).getCount() > 9 ? 14 : 11), y + 3, 9, 2);
+            context.drawGuiTexture(Identifier.of("container/villager/discount_strikethrough"), x + (originalCoins.get(i).getCount() > 9 ? 14 : 11), y + 3, 9, 2);
             context.drawItemWithoutEntity(ItemOps.singleCopy(originalCoins.get(i)), x - 4, y - 5 + i * 10);
         }
 

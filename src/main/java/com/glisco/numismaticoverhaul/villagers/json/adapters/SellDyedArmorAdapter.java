@@ -5,17 +5,14 @@ import com.glisco.numismaticoverhaul.villagers.json.TradeJsonAdapter;
 import com.glisco.numismaticoverhaul.villagers.json.VillagerJsonHelper;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
+import net.minecraft.component.type.DyedColorComponent;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.DyeItem;
-import net.minecraft.item.DyeableItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOffers;
+import net.minecraft.village.*;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 public class SellDyedArmorAdapter extends TradeJsonAdapter {
@@ -50,7 +47,8 @@ public class SellDyedArmorAdapter extends TradeJsonAdapter {
 
         public TradeOffer create(Entity entity, Random random) {
             ItemStack itemStack2 = new ItemStack(this.sell);
-            if (this.sell instanceof DyeableItem) {
+            if (itemStack2.isIn(ItemTags.DYEABLE)) {
+                // Explicit type since var doesn't fully respect this
                 List<DyeItem> list = Lists.newArrayList();
                 list.add(getDye(random));
                 if (random.nextFloat() > 0.7F) {
@@ -61,10 +59,11 @@ public class SellDyedArmorAdapter extends TradeJsonAdapter {
                     list.add(getDye(random));
                 }
 
-                itemStack2 = DyeableItem.blendAndSetColor(itemStack2, list);
+                itemStack2 = DyedColorComponent.setColor(itemStack2, list);
             }
 
-            return new TradeOffer(CurrencyHelper.getClosest(price), itemStack2, this.maxUses, this.experience, priceMultiplier);
+
+            return new TradeOffer(CurrencyHelper.getClosestTradeItem(price), itemStack2, this.maxUses, this.experience, priceMultiplier);
 
         }
 

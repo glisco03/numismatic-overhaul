@@ -14,7 +14,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.registry.Registry;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOffers;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +31,7 @@ public class SellSusStewAdapter extends TradeJsonAdapter {
         final int price = json.get("price").getAsInt();
         final int duration = JsonHelper.getInt(json, "duration", 100);
 
-        final var effectId = new Identifier(JsonHelper.getString(json, "effect_id"));
+        final var effectId = Identifier.of(JsonHelper.getString(json, "effect_id"));
         final var effect = Registries.STATUS_EFFECT.getOrEmpty(effectId)
                 .orElseThrow(() -> new DeserializationException("Unknown status effect '" + effectId + "'"));
 
@@ -60,9 +59,10 @@ public class SellSusStewAdapter extends TradeJsonAdapter {
         @Override
         public TradeOffer create(Entity entity, Random random) {
             ItemStack susStew = new ItemStack(Items.SUSPICIOUS_STEW, 1);
-            SuspiciousStewItem.addEffectsToStew(susStew, List.of(new SuspiciousStewIngredient.StewEffect(this.effect, this.duration)));
+            // FIXME - Rework to only support intended stews (interface), or fully deterministic via custom stew?
+            //SuspiciousStewItem.addEffectsToStew(susStew, List.of(SuspiciousStewIngredient.of());
 
-            return new TradeOffer(CurrencyHelper.getClosest(price), susStew, this.maxUses, this.experience, this.multiplier);
+            return new TradeOffer(CurrencyHelper.getClosestTradeItem(price), susStew, this.maxUses, this.experience, this.multiplier);
         }
     }
 }

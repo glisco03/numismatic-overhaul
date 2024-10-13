@@ -9,6 +9,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -60,7 +61,7 @@ public class ShopBlock extends BlockWithEntity {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient) {
             ShopBlockEntity shop = (ShopBlockEntity) world.getBlockEntity(pos);
             if (shop.busy) return ActionResult.SUCCESS;
@@ -91,7 +92,7 @@ public class ShopBlock extends BlockWithEntity {
             return;
         }
 
-        if (itemStack.hasCustomName() && world.getBlockEntity(pos) instanceof ShopBlockEntity shop) {
+        if (itemStack.contains(DataComponentTypes.CUSTOM_NAME) && world.getBlockEntity(pos) instanceof ShopBlockEntity shop) {
             shop.setCustomName(itemStack.getName());
         }
 

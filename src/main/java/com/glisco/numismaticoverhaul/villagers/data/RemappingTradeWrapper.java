@@ -5,9 +5,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOffers;
+import net.minecraft.village.*;
 import org.jetbrains.annotations.Nullable;
+import java.util.Optional;
 
 public class RemappingTradeWrapper implements TradeOffers.Factory {
 
@@ -29,17 +29,31 @@ public class RemappingTradeWrapper implements TradeOffers.Factory {
         if (tempOffer == null) return null;
 
         final var firstBuyRemapped = remap(tempOffer.getOriginalFirstBuyItem());
-        final var secondBuyRemapped = remap(tempOffer.getSecondBuyItem());
+        final var secondBuyRemapped = remap(tempOffer.getSecondBuyItem().orElseThrow());
         final var sellRemapped = remap(tempOffer.getSellItem());
 
-        return new TradeOffer(firstBuyRemapped, secondBuyRemapped, sellRemapped, tempOffer.getUses(), tempOffer.getMaxUses(), tempOffer.getMerchantExperience(), tempOffer.getPriceMultiplier(), tempOffer.getDemandBonus());
+        return new TradeOffer(firstBuyRemapped, Optional.of(secondBuyRemapped), sellRemapped.itemStack(), tempOffer.getUses(), tempOffer.getMaxUses(), tempOffer.getMerchantExperience(), tempOffer.getPriceMultiplier(), tempOffer.getDemandBonus());
     }
 
-    private static ItemStack remap(ItemStack stack) {
-        if (stack.getItem() != Items.EMERALD) return stack;
+    private static TradedItem remap(TradedItem tradedItem) {
+        if (!tradedItem.itemStack().isOf(Items.EMERALD)) {
+            return tradedItem;
+        }
+
+        return CurrencyHelper.getClosestTradeItem(convertEmeraldsToCoins(tradedItem.count()));
+    }
+
+    private static TradedItem remap(ItemStack stack) {
+        if (stack.getItem() != Items.EMERALD) {
+            return new TradedItem(stack.getItem(), stack.getCount());
+        }
 
         final int moneyWorth = stack.getCount() * 125;
 
-        return CurrencyHelper.getClosest(moneyWorth);
+        return CurrencyHelper.getClosestTradeItem(convertEmeraldsToCoins(moneyWorth));
+    }
+
+    private static long convertEmeraldsToCoins(int stackCount) {
+        return (long) stackCount * 125;
     }
 }

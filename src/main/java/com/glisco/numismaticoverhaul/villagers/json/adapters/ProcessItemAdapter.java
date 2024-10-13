@@ -7,10 +7,9 @@ import com.google.gson.JsonObject;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOffers;
+import net.minecraft.village.*;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import java.util.Optional;
 
 public class ProcessItemAdapter extends TradeJsonAdapter {
 
@@ -31,26 +30,11 @@ public class ProcessItemAdapter extends TradeJsonAdapter {
         return new Factory(buy, sell, price, max_uses, villager_experience, price_multiplier);
     }
 
-    private static class Factory implements TradeOffers.Factory {
-        private final ItemStack buy;
-        private final int price;
-        private final ItemStack sell;
-        private final int maxUses;
-        private final int experience;
-        private final float multiplier;
+    private record Factory(ItemStack buy, ItemStack sell, int price, int maxUses, int experience,
+                           float multiplier) implements TradeOffers.Factory {
 
-        public Factory(ItemStack buy, ItemStack sell, int price, int maxUses, int experience, float multiplier) {
-            this.buy = buy;
-            this.price = price;
-            this.sell = sell;
-            this.maxUses = maxUses;
-            this.experience = experience;
-            this.multiplier = multiplier;
-        }
-
-        @Nullable
         public TradeOffer create(Entity entity, Random random) {
-            return new TradeOffer(CurrencyHelper.getClosest(price), buy, sell, this.maxUses, this.experience, this.multiplier);
+            return new TradeOffer(CurrencyHelper.getClosestTradeItem(price), Optional.of(new TradedItem(buy.getItem(), buy.getCount())), sell, this.maxUses, this.experience, this.multiplier);
         }
     }
 }

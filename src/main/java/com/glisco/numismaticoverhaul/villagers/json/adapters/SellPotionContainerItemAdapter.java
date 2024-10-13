@@ -4,19 +4,16 @@ import com.glisco.numismaticoverhaul.currency.CurrencyHelper;
 import com.glisco.numismaticoverhaul.villagers.json.TradeJsonAdapter;
 import com.glisco.numismaticoverhaul.villagers.json.VillagerJsonHelper;
 import com.google.gson.JsonObject;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtil;
-import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.registry.Registry;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOffers;
+import net.minecraft.village.*;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+import java.util.Optional;
 
 public class SellPotionContainerItemAdapter extends TradeJsonAdapter {
 
@@ -56,11 +53,14 @@ public class SellPotionContainerItemAdapter extends TradeJsonAdapter {
         }
 
         public TradeOffer create(Entity entity, Random random) {
-            List<Potion> list = Registries.POTION.stream().filter((potion) -> !potion.getEffects().isEmpty() && BrewingRecipeRegistry.isBrewable(potion)).toList();
+            List<Potion> list = Registries.POTION.stream().filter((potion) -> {
+                return !potion.getEffects().isEmpty() && entity.getWorld().getBrewingRecipeRegistry().isBrewable(Registries.POTION.createEntry(potion));
+            }).toList();
 
             Potion potion = list.get(random.nextInt(list.size()));
-            ItemStack itemStack2 = PotionUtil.setPotion(containerItem.copy(), potion);
-            return new TradeOffer(CurrencyHelper.getClosest(price), buyItem, itemStack2, this.maxUses, this.experience, this.priceMultiplier);
+
+            ItemStack itemStack2 = PotionContentsComponent.createStack(containerItem.getItem(), Registries.POTION.createEntry(potion));
+            return new TradeOffer(CurrencyHelper.getClosestTradeItem(price), Optional.of(new TradedItem(buyItem.getItem(), buyItem.getCount())), itemStack2, this.maxUses, this.experience, this.priceMultiplier);
         }
     }
 }

@@ -7,8 +7,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOffers;
+import net.minecraft.village.*;
 import org.jetbrains.annotations.NotNull;
 
 public class BuyStackAdapter extends TradeJsonAdapter {
@@ -43,7 +42,7 @@ public class BuyStackAdapter extends TradeJsonAdapter {
         }
 
         public TradeOffer create(Entity entity, Random random) {
-            return new TradeOffer(buy, CurrencyHelper.getClosest(price), this.maxUses, this.experience, this.multiplier);
+            return new TradeOffer(new TradedItem(buy.getItem(), buy.getCount()), CurrencyHelper.getClosest(price), this.maxUses, this.experience, this.multiplier);
         }
     }
 }

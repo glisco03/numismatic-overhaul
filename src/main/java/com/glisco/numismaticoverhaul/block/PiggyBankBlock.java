@@ -6,17 +6,21 @@ import io.wispforest.owo.ops.WorldOps;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.component.ComponentMap;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -100,7 +104,7 @@ public class PiggyBankBlock extends HorizontalFacingBlock implements BlockEntity
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 
         if (!world.isClient) {
             if (world.getBlockEntity(pos) instanceof NamedScreenHandlerFactory factory) {
@@ -132,7 +136,7 @@ public class PiggyBankBlock extends HorizontalFacingBlock implements BlockEntity
         if (world.getBlockEntity(pos) instanceof PiggyBankBlockEntity piggyBank && player.isCreative() && !world.isClient && !piggyBank.inventory().stream().allMatch(ItemStack::isEmpty)) {
 
             var stack = new ItemStack(NumismaticOverhaulBlocks.PIGGY_BANK);
-            piggyBank.setStackNbt(stack);
+            piggyBank.setComponents(ComponentMap.builder().add(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(List.of(stack))).build());
 
             ItemEntity var = new ItemEntity(world, pos.getX() + .5d, pos.getY() + .5d, pos.getZ() + .5d, stack);
             var.setToDefaultPickupDelay();
@@ -155,7 +159,7 @@ public class PiggyBankBlock extends HorizontalFacingBlock implements BlockEntity
                 piggyBank.inventory().stream().filter(stack -> !stack.isEmpty()).forEach(drops::add);
                 return drops;
             } else {
-                builder.addDynamicDrop(new Identifier("contents"), (consumer) -> {
+                builder.addDynamicDrop(Identifier.of("contents"), (consumer) -> {
                     piggyBank.inventory().forEach(consumer);
                 });
             }

@@ -1,7 +1,7 @@
 package com.glisco.numismaticoverhaul.item;
 
-import io.wispforest.owo.serialization.Endec;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.KeyedEndec;
 import net.minecraft.item.ItemStack;
 
 public interface CurrencyItem {

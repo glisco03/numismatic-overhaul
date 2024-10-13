@@ -3,12 +3,11 @@ package com.glisco.numismaticoverhaul.item;
 import com.glisco.numismaticoverhaul.ModComponents;
 import com.glisco.numismaticoverhaul.NumismaticOverhaul;
 import com.glisco.numismaticoverhaul.currency.Currency;
-import io.wispforest.owo.itemgroup.OwoItemSettings;
-import net.minecraft.client.item.TooltipData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipData;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.TradeOutputSlot;
 import net.minecraft.text.Style;
@@ -27,7 +26,7 @@ public class CoinItem extends Item implements CurrencyItem {
     public final Style NAME_STYLE;
 
     public CoinItem(Currency currency) {
-        super(new OwoItemSettings().group(NumismaticOverhaul.NUMISMATIC_GROUP).maxCount(99));
+        super(new Item.Settings().group(NumismaticOverhaul.NUMISMATIC_GROUP).maxCount(99));
         this.currency = currency;
         this.NAME_STYLE = Style.EMPTY.withColor(TextColor.fromRgb(currency.getNameColor()));
     }

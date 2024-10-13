@@ -2,31 +2,20 @@ package com.glisco.numismaticoverhaul.block;
 
 import com.glisco.numismaticoverhaul.NumismaticOverhaul;
 import com.glisco.numismaticoverhaul.item.CurrencyTooltipData;
-import io.wispforest.owo.itemgroup.OwoItemSettings;
-import io.wispforest.owo.registration.reflect.AutoRegistryContainer;
 import io.wispforest.owo.registration.reflect.BlockEntityRegistryContainer;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.item.TooltipData;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
+import net.minecraft.item.tooltip.TooltipData;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.registry.Registry;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class NumismaticOverhaulBlocks implements BlockRegistryContainer {
 
@@ -37,38 +26,42 @@ public class NumismaticOverhaulBlocks implements BlockRegistryContainer {
     @Override
     public BlockItem createBlockItem(Block block, String identifier) {
         if (block == INEXHAUSTIBLE_SHOP) {
-            return new BlockItem(block, new OwoItemSettings().group(NumismaticOverhaul.NUMISMATIC_GROUP).rarity(Rarity.EPIC)) {
+            return new BlockItem(block, new Item.Settings().group(NumismaticOverhaul.NUMISMATIC_GROUP).rarity(Rarity.EPIC)) {
                 @Override
-                public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+                public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
                     tooltip.add(Text.translatable(stack.getTranslationKey() + ".tooltip").formatted(Formatting.GRAY));
                 }
             };
         } else if (block == PIGGY_BANK) {
-            return new BlockItem(block, new OwoItemSettings().group(NumismaticOverhaul.NUMISMATIC_GROUP).equipmentSlot(stack -> EquipmentSlot.HEAD)) {
+            return new BlockItem(block, new Item.Settings().group(NumismaticOverhaul.NUMISMATIC_GROUP).equipmentSlot((entity, stack) -> EquipmentSlot.HEAD)) {
+
                 @Override
                 public Optional<TooltipData> getTooltipData(ItemStack stack) {
-                    if (stack.hasNbt() && stack.getNbt().contains("BlockEntityTag")) {
-                        var items = DefaultedList.ofSize(3, ItemStack.EMPTY);
-                        Inventories.readNbt(stack.getSubNbt("BlockEntityTag"), items);
+                    var containerComponent = stack.getComponents().getOrDefault(DataComponentTypes.CONTAINER, ContainerComponent.DEFAULT);
 
-                        var values = new long[]{items.get(0).getCount(), items.get(1).getCount(), items.get(2).getCount()};
-                        return Optional.of(new CurrencyTooltipData(values, new long[]{-1}));
-                    } else {
-                        return Optional.empty();
+                    List<Long> valueList = new ArrayList<>();
+                    containerComponent.iterateNonEmpty().forEach(itemStack -> valueList.add(((long) itemStack.getCount())));
+
+                    if (valueList.isEmpty()) return Optional.empty();
+
+                    long[] values = new long[valueList.size()];
+                    for (int i = 0; i < valueList.size(); i++) {
+                        values[i] = valueList.get(i);
                     }
+                    return Optional.of(new CurrencyTooltipData(values, new long[]{-1}));
                 }
             };
         }
 
-        return new BlockItem(block, new OwoItemSettings().group(NumismaticOverhaul.NUMISMATIC_GROUP));
+        return new BlockItem(block, new Item.Settings().group(NumismaticOverhaul.NUMISMATIC_GROUP));
     }
 
     public static final class Entities implements BlockEntityRegistryContainer {
 
         public static final BlockEntityType<ShopBlockEntity> SHOP =
-                FabricBlockEntityTypeBuilder.create(ShopBlockEntity::new, NumismaticOverhaulBlocks.SHOP, NumismaticOverhaulBlocks.INEXHAUSTIBLE_SHOP).build();
+            BlockEntityType.Builder.create(ShopBlockEntity::new, NumismaticOverhaulBlocks.SHOP, NumismaticOverhaulBlocks.INEXHAUSTIBLE_SHOP).build();
 
         public static final BlockEntityType<PiggyBankBlockEntity> PIGGY_BANK =
-                FabricBlockEntityTypeBuilder.create(PiggyBankBlockEntity::new, NumismaticOverhaulBlocks.PIGGY_BANK).build();
+            BlockEntityType.Builder.create(PiggyBankBlockEntity::new, NumismaticOverhaulBlocks.PIGGY_BANK).build();
     }
 }

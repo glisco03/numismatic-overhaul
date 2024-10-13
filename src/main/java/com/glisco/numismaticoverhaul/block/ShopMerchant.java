@@ -69,7 +69,7 @@ public class ShopMerchant implements Merchant {
             }
         }
 
-        shop.addCurrency(CurrencyHelper.getValue(Arrays.asList(offer.getOriginalFirstBuyItem(), offer.getSecondBuyItem())));
+        shop.addCurrency(CurrencyHelper.getValue(Arrays.asList(offer.getOriginalFirstBuyItem(), offer.getSecondBuyItem().get().itemStack())));
     }
 
     @Override

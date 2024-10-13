@@ -1,7 +1,7 @@
 package com.glisco.numismaticoverhaul.item;
 
 import com.glisco.numismaticoverhaul.currency.CurrencyResolver;
-import net.minecraft.client.item.TooltipData;
+import net.minecraft.item.tooltip.TooltipData;
 
 public final class CurrencyTooltipData implements TooltipData {
 

@@ -2,9 +2,6 @@ package com.glisco.numismaticoverhaul.currency;
 
 import com.glisco.numismaticoverhaul.NumismaticOverhaul;
 import com.glisco.numismaticoverhaul.item.MoneyBagItem;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
@@ -15,7 +12,6 @@ import net.minecraft.loot.entry.LootPoolEntryType;
 import net.minecraft.loot.function.LootFunction;
 import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.MathHelper;
-
 import java.util.List;
 import java.util.function.Consumer;
 

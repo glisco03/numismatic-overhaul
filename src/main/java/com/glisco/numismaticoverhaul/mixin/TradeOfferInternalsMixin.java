@@ -17,9 +17,8 @@ import java.util.function.Consumer;
 public class TradeOfferInternalsMixin {
 
     /**
-     * Redirect Fabric API trade helper to integrate with NO
-     *
      * @author glisco
+     * @reason Redirect Fabric API trade helper to integrate with NO
      */
     @Overwrite(remap = false)
     public static synchronized void registerVillagerOffers(VillagerProfession profession, int level, TradeOfferHelper.VillagerOffersAdder factory) {
@@ -30,9 +29,8 @@ public class TradeOfferInternalsMixin {
     }
 
     /**
-     * Redirect Fabric API trade helper to integrate with NO
-     *
      * @author glisco
+     * @reason Redirect Fabric API trade helper to integrate with NO
      */
     @Overwrite(remap = false)
     public static synchronized void registerWanderingTraderOffers(int level, Consumer<List<TradeOffers.Factory>> factory) {
@@ -43,9 +41,8 @@ public class TradeOfferInternalsMixin {
     }
 
     /**
-     * Disable registering trades completely to make sure that no one ever interferes with the NO system
-     *
      * @author glisco
+     * @reason Disable registering trades completely to make sure that no one ever interferes with the NO system
      */
     @Overwrite(remap = false)
     private static void registerOffers(Int2ObjectMap<TradeOffers.Factory[]> leveledTradeMap, int level, Consumer<List<TradeOffers.Factory>> factory) {}

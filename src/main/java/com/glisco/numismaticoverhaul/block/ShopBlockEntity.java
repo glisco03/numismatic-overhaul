@@ -1,8 +1,8 @@
 package com.glisco.numismaticoverhaul.block;
 
 import com.glisco.numismaticoverhaul.NumismaticOverhaul;
+import io.wispforest.endec.impl.KeyedEndec;
 import io.wispforest.owo.ops.WorldOps;
-import io.wispforest.owo.serialization.endec.KeyedEndec;
 import io.wispforest.owo.util.ImplementedInventory;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -17,6 +17,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
@@ -39,7 +40,8 @@ public class ShopBlockEntity extends LockableContainerBlockEntity implements Imp
     private static final int[] NO_SLOTS = new int[0];
     public static KeyedEndec<List<ShopOffer>> OFFERS_LIST = ShopOffer.ENDEC.listOf().keyed("offers", ArrayList::new);
 
-    private final DefaultedList<ItemStack> INVENTORY = DefaultedList.ofSize(27, ItemStack.EMPTY);
+    // TODO - Review, no longer final
+    private DefaultedList<ItemStack> INVENTORY = DefaultedList.ofSize(27, ItemStack.EMPTY);
 
     public boolean busy = false;
     private final Merchant merchant;
@@ -86,6 +88,16 @@ public class ShopBlockEntity extends LockableContainerBlockEntity implements Imp
         return Text.translatable("gui.numismatic-overhaul.shop.inventory_title");
     }
 
+    @Override
+    protected DefaultedList<ItemStack> getHeldStacks() {
+        return this.INVENTORY;
+    }
+
+    @Override
+    protected void setHeldStacks(DefaultedList<ItemStack> inventory) {
+        this.INVENTORY = inventory;
+    }
+
     @NotNull
     public Merchant getMerchant() {
         return merchant;
@@ -118,9 +130,9 @@ public class ShopBlockEntity extends LockableContainerBlockEntity implements Imp
     }
 
     @Override
-    public void writeNbt(NbtCompound tag) {
-        super.writeNbt(tag);
-        Inventories.writeNbt(tag, INVENTORY);
+    public void writeNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+        super.writeNbt(tag, registryLookup);
+        Inventories.writeNbt(tag, INVENTORY, registryLookup);
         tag.put(OFFERS_LIST, offers);
         tag.putBoolean("AllowsTransfer", this.allowsTransfer);
         tag.putLong("StoredCurrency", storedCurrency);
@@ -130,9 +142,9 @@ public class ShopBlockEntity extends LockableContainerBlockEntity implements Imp
     }
 
     @Override
-    public void readNbt(NbtCompound tag) {
-        super.readNbt(tag);
-        Inventories.readNbt(tag, INVENTORY);
+    public void readNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(tag, registryLookup);
+        Inventories.readNbt(tag, INVENTORY, registryLookup);
         this.offers = tag.get(OFFERS_LIST);
         if (tag.contains("Owner")) {
             owner = tag.getUuid("Owner");
@@ -198,9 +210,9 @@ public class ShopBlockEntity extends LockableContainerBlockEntity implements Imp
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt() {
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
         NbtCompound tag = new NbtCompound();
-        this.writeNbt(tag);
+        this.writeNbt(tag, registryLookup);
         tag.remove("Items");
         tag.remove("StoredCurrency");
         return tag;

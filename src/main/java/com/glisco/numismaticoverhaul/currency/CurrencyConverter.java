@@ -2,6 +2,7 @@ package com.glisco.numismaticoverhaul.currency;
 
 import com.glisco.numismaticoverhaul.item.NumismaticOverhaulItems;
 import net.minecraft.item.ItemStack;
+import net.minecraft.village.TradedItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;

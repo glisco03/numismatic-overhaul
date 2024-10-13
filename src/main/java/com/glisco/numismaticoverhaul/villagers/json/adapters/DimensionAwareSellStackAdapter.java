@@ -50,7 +50,7 @@ public class DimensionAwareSellStackAdapter extends TradeJsonAdapter {
         public TradeOffer create(Entity entity, Random random) {
             if (!entity.getWorld().getRegistryKey().getValue().toString().equals(targetDimensionId)) return null;
 
-            return new TradeOffer(CurrencyHelper.getClosest(price), sell, this.maxUses, this.experience, multiplier);
+            return new TradeOffer(CurrencyHelper.getClosestTradeItem(price), sell, this.maxUses, this.experience, multiplier);
         }
     }
 }

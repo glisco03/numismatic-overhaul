@@ -12,9 +12,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.MerchantScreenHandler;
 import net.minecraft.village.Merchant;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import net.minecraft.village.TradedItem;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -30,7 +29,8 @@ public class MerchantScreenHandlerMixin {
     //Autofill with coins from the player's purse if the trade requires it
     //Injected at TAIL to let normal autofill run and fill up if anything is missing
     @Inject(method = "autofill", at = @At("TAIL"))
-    public void autofillOverride(int slot, ItemStack stack, CallbackInfo ci) {
+    public void autofillOverride(int slot, TradedItem tradedItem, CallbackInfo ci) {
+        var stack = tradedItem.itemStack();
         MerchantScreenHandler handler = (MerchantScreenHandler) (Object) this;
         CurrencyComponent playerBalance = ModComponents.CURRENCY.get(((PlayerInventory) handler.getSlot(3).inventory).player);
 
@@ -62,7 +62,7 @@ public class MerchantScreenHandlerMixin {
     }
 
     private static void autofillWithMoneyBag(int slot, ItemStack stack, MerchantScreenHandler handler, CurrencyComponent playerBalance) {
-        if (ItemStack.canCombine(stack, handler.getSlot(slot).getStack())) return;
+        if (ItemStack.areEqual(stack, handler.getSlot(slot).getStack())) return;
         PlayerEntity player = ((PlayerInventory) handler.getSlot(3).inventory).player;
 
         //See how much is required and how much in present in the player's inventory
