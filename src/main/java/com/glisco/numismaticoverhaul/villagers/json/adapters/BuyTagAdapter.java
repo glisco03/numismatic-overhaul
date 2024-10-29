@@ -39,11 +39,11 @@ public class BuyTagAdapter extends TradeJsonAdapter {
 
     private static class Factory implements TradeOffers.Factory {
         private final Identifier buyTag;
-        private final int count;
+        private final int price;
         private final int maxUses;
         private final int experience;
-        private final int price;
         private final float multiplier;
+        private final int count;
 
         public Factory(Identifier buyTag, int count, int price, int maxUses, int experience, float multiplier) {
             this.buyTag = buyTag;
@@ -71,7 +71,7 @@ public class BuyTagAdapter extends TradeJsonAdapter {
             }
 
             final var buyStack = new ItemStack(entries.get(random.nextInt(entries.size())).value(), this.count);
-            return new TradeOffer(CurrencyHelper.getClosest(price), buyStack, this.maxUses, this.experience, multiplier);
+            return new TradeOffer(buyStack, CurrencyHelper.getClosest(price), this.maxUses, this.experience, multiplier);
         }
     }
 
